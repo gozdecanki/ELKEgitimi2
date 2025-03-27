@@ -1,0 +1,60 @@
+
+#google ın bunu mu demek istedin şeklinde bizim hatalı veya eksik yazdığımıza benzer sorgulaması 
+#fuzziness değeri 0- 1ve2, 1- 3ve5, 2-5 ve üstü karaketeri temsil eder
+
+POST kibana_sample_data_ecommerce/_search
+{
+  "query": {
+    "fuzzy": {
+      "customer_first_name.keyword": {
+        "value":"ane",
+        "fuzziness": 2
+      }
+    }
+  }
+}
+
+
+#pagination response de göstermek için 2 tane getir ama 50.den başla 
+POST kibana_sample_data_ecommerce/_search
+{
+  "size": 2, 
+  "from":50,
+  "query": {
+    "fuzzy": {
+      "customer_first_name.keyword": {
+        "value":"ane",
+        "fuzziness": 2
+      }
+    }
+  }
+}
+
+
+
+#order des, asc
+
+
+POST kibana_sample_data_ecommerce/_search
+{
+  "size": 5, 
+  "from":50,
+  "query": {
+    "fuzzy": {
+      "customer_first_name.keyword": {
+        "value":"ane",
+        "fuzziness": 2
+      }
+    }
+  },
+  "sort":[
+    
+    {
+      "products.base_price":{
+        "order":"desc"
+      }
+    }
+    ]
+}
+
+

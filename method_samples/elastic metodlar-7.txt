@@ -1,0 +1,69 @@
+
+#keyword artık kullanmıyoruz. full text search yapıyoruz. max_score önemli
+
+
+POST kibana_sample_data_ecommerce/_search
+{
+  "query":{
+    "match": {
+      "customer_full_name": "Diane"
+    }
+  }
+}
+
+
+
+#Diane Alvarez olarak aradığımızda her iki kelime de ayrı ayrı indexlendiği için ikisini de ayrı ayrı arıyor ve score bilgisine göre en yüksekten aşağı doğru sıralanıyor
+
+#Diane VEYA Alvarez , ya da ikisi de
+POST kibana_sample_data_ecommerce/_search
+{
+  "query":{
+    "match": {
+      "customer_full_name": "Diane Alvarez"
+    }
+  }
+}
+
+
+#Diane VE Alvarez olan gelsin istiyorsak (term query gibi)
+POST kibana_sample_data_ecommerce/_search
+{
+  "query":{
+    "match": {
+      "customer_full_name":{
+        "query": "Diane Alvarez",
+        "operator":"and"
+        
+      }
+    }
+  }
+}
+
+#arayacağımız textin hangi alanda olduğundan tam olarak emin değilsek birden fazla alnda arama yapabiliyoruz.
+POST kibana_sample_data_ecommerce/_search
+{
+  "query":{
+    "multi_match": {
+      "query": "Yuri",
+      "fields": [
+        "customer_first_name",
+        "customer_last_name"]
+    }
+  }
+}
+
+
+#arayacağımız texte benzer olanları fuzziness ile arama
+POST kibana_sample_data_ecommerce/_search
+{
+  "query":{
+    "multi_match": {
+      "query": "uri",
+      "fields": [
+        "customer_first_name",
+        "customer_last_name"],
+        "fuzziness": 2
+    }
+  }
+}

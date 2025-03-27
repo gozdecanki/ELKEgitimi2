@@ -1,0 +1,33 @@
+PUT musteri/_doc/1
+{
+"id":5,
+"ad":"Gözde",
+"aktifMi":true,
+"iletisim":{
+"adres":"Ankara",
+"telefon":" 0 555 999 9988"
+}
+}
+
+GET musteri/_doc/1
+
+GET musteri/_source/1
+
+POST musteri/_update/1
+{
+  "doc": {
+    "ad":"Gözde Cankı"
+  }
+}
+
+
+
+POST musteri/_update/1
+{
+  "doc": {
+    "ad":"Gözde Cankı - iptal",
+    "aktifMi": false
+  }
+}
+
+DELETE musteri/_doc/1

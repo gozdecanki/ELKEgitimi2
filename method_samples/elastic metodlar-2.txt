@@ -1,0 +1,48 @@
+PUT urun/_doc/12
+{
+  "id": 445,
+  "barkod": 25253454,
+  "ad":"Anakart Asus Z342 I9 7700MHZ 192GB",
+  "fiyat": 33899.99,
+  "uretimtarihi":"2024/02/05"
+}
+
+GET urun/_doc/12
+
+GET urun/_mapping
+
+PUT satis
+{
+  "mappings": {
+    "properties": {
+      "musteriid":{"type": "long"},
+      "urunid":{"type":"long"},
+      "adet":{"type":"float"},
+      "tutar":{"type":"float"}
+    }
+  }
+}
+
+GET satis/_mapping
+
+PUT satis/_doc/3
+{
+  "musteriid":5,
+  "urunid":4,
+  "adet":1,
+  "tutar":235
+}
+
+GET satis/_doc/3
+
+
+//burada oluşturulan alanların hepsini long olarak algılar
+GET satis1/_mapping
+
+PUT satis1/_doc/3
+{
+  "musteriid":5,
+  "urunid":4,
+  "adet":1,
+  "tutar":235
+}

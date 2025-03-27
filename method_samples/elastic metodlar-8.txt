@@ -1,0 +1,53 @@
+
+#Women's Clothing göre arama yaptığında iki kelimeye ayrı ayrı baktığı için score düşük olan veriler alakasız olacaktır
+
+POST kibana_sample_data_ecommerce/_search
+{
+  "from":4000,
+  "query":{
+    "match": {
+      "products.category": "Women's Clothing"
+    }
+  }
+}
+
+
+#phrase ile arama taptığımızda tam arama yapıyor en alakalılar geliyor
+POST kibana_sample_data_ecommerce/_search
+{
+
+  "query":{
+    "match_phrase": {
+      "products.category": "Women's Clothing"
+    }
+  }
+}
+
+
+#Women's Clothing bu iki kelime arasına (slop=2 ) 2 tane kelime girse dahi aynı hizada aranan birşey olduğu için sonuç gelecektir. tolere etmesini sağlıyoruz
+POST kibana_sample_data_ecommerce/_search
+{
+
+  "query":{
+    "match_phrase": {
+      "products.category":{
+        "query":"Women's Clothing",
+        "slop": 2
+        
+      }
+    }
+  }
+}
+
+
+#De ile başlıyorsa. "Tariq Dennis" bu değer döner çünkü en baştan başlayacak diye birşey yok. bu 2 kelime yarı ayrı indexli çünkü
+POST kibana_sample_data_ecommerce/_search
+{
+  "query":{
+    "match_bool_prefix": {
+      "customer_full_name":{
+        "query":"De"
+      }
+    }
+  }
+}

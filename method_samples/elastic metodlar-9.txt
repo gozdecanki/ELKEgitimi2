@@ -1,0 +1,68 @@
+
+#istatiksel analizlere ihtiyaç duyuyorsak, min, max, topla, ortalama bul vs.
+
+GET kibana_sample_data_ecommerce/_search
+{
+ "aggs": {
+   "ahmet_amca_nasilsin": {
+     "stats": {
+       "field": "total_quantity"
+     }
+   }
+ }
+}
+
+# çıktısı
+#  "aggregations": {
+#     "ahmet_amca_nasilsin": {
+#       "count": 4675,
+#       "min": 1,
+#       "max": 8,
+#       "avg": 2.1585026737967916,
+#       "sum": 10091
+#     }
+#   }
+
+
+
+GET kibana_sample_data_ecommerce/_search
+{
+ "aggs": {
+   "ahmet_amca_nasilsin": {
+     "max": {
+       "field": "products.base_unit_price"
+     }
+   }
+ }
+}
+
+# "aggregations": {
+#    "ahmet_amca_nasilsin": {
+#      "value": 540
+#    }
+#  }
+
+
+GET kibana_sample_data_ecommerce/_search
+{
+ "aggs": {
+   "ahmet_amca_nasilsin": {
+     "min": {
+       "field": "taxful_total_price"
+     }
+   }
+ }
+}
+
+#source?false yaparsak gereks'z response alanini dönmeyecek demek
+GET kibana_sample_data_ecommerce/_search
+{
+  "_source":false, 
+ "aggs": {
+   "ahmet_amca_nasilsin": {
+     "min": {
+       "field": "taxful_total_price"
+     }
+   }
+ }
+}

@@ -1,0 +1,85 @@
+
+#bu arama prefixe göre arama yapar text te değil keyworde göre arıyoruz. şununla başlayan vs gibi
+
+POST kibana_sample_data_ecommerce/_search
+{
+  "query": {
+    "prefix": {
+      "customer_first_name.keyword": {
+        "value":"Jac"
+      }
+    }
+  }
+}
+
+
+
+#bu arama range e göre arama yapar. gte  greater than equals, lte litte than equals, gt, lt 
+
+POST kibana_sample_data_ecommerce/_search
+{
+  "query": {
+    "range": {
+      "product.base_price": {
+        "gte":10,
+        "lte":20
+      }
+    }
+  }
+}
+
+
+
+
+
+#sql deki like mantığı
+
+POST kibana_sample_data_ecommerce/_search
+{
+  "query": {
+    "wildcard": {
+      "customer_first_name.keyword": {
+       "value": "Tari?"
+      }
+    }
+  }
+}
+
+
+
+#sql deki like mantığı, ne ile başlarsa başlasın e ile bitsin
+
+POST kibana_sample_data_ecommerce/_search
+{
+  "query": {
+    "wildcard": {
+      "customer_first_name.keyword": {
+       "value": "*e"
+      }
+    }
+  }
+}
+
+#sql deki like mantığı, sonu ve başı ne olursa olsun içinse se olsun
+
+POST kibana_sample_data_ecommerce/_search
+{
+  "query": {
+    "wildcard": {
+      "customer_first_name.keyword": {
+       "value": "*se*"
+      }
+    }
+  }
+}
+
+POST kibana_sample_data_ecommerce/_search
+{
+  "query": {
+    "wildcard": {
+      "customer_first_name.keyword": {
+       "value": "Y*se*"
+      }
+    }
+  }
+}

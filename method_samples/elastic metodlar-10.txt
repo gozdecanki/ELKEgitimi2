@@ -1,0 +1,138 @@
+
+#bucket agg. belli bir alanınızdaki mükerrer dataları tekilleştirir. gruplaştırır.
+# kategorye göre grupla ve doküman adetlerini verir
+
+GET kibana_sample_data_ecommerce/_search
+{
+  "_source":false, 
+ "aggs": {
+   "kovalar": {
+     "terms": {
+       "field": "category.keyword"
+     }
+   }
+ }
+}
+
+#çıktı
+ "aggregations": {
+    "kovalar": {
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 0,
+      "buckets": [
+        {
+          "key": "Men's Clothing",
+          "doc_count": 2024
+        },
+        {
+          "key": "Women's Clothing",
+          "doc_count": 1903
+        },
+        {
+          "key": "Women's Shoes",
+          "doc_count": 1136
+        },
+        {
+          "key": "Men's Shoes",
+          "doc_count": 944
+        },
+        {
+          "key": "Women's Accessories",
+          "doc_count": 830
+        },
+        {
+          "key": "Men's Accessories",
+          "doc_count": 572
+        }
+      ]
+    }
+    
+    
+#key değerine göre alfabetik sıraladı    
+GET kibana_sample_data_ecommerce/_search
+{
+  "_source":false, 
+ "aggs": {
+   "kovalar": {
+     "terms": {
+       "field": "category.keyword",
+       "order": {
+         "_key": "asc"
+       }
+     }
+   }
+ }
+}
+
+#doc_count değerine göre sıraladı    
+GET kibana_sample_data_ecommerce/_search
+{
+  "_source":false, 
+ "aggs": {
+   "kovalar": {
+     "terms": {
+       "field": "category.keyword",
+       "order": {
+         "_count": "desc"
+       }
+     }
+   }
+ }
+}
+
+#range
+GET kibana_sample_data_ecommerce/_search
+{
+  "_source":false, 
+ "aggs": {
+   "kovalar": {
+    "range": {
+      "field": "taxful_total_price",
+      "ranges": [
+        {"to": 50},
+        {
+          "from": 51,
+          "to": 100
+        },
+        {
+          "from": 101
+        }
+      ]
+    }
+     }
+   }
+ }
+
+#global aggregation: karşılaştırmalı bir sorgu yapmak için. belli bir alanla ilgili bir sorgunun, tüm veri kümesi ile bir bağlam oluşturabilmek için yaptığımız bir sorgulama türü
+#"Women's Clothing" bu kategorinin tüm kategorilere göre avg si
+
+GET kibana_sample_data_ecommerce/_search
+{
+  "query":{
+    "term": {
+      "products.category": {
+        "value": "Women's Clothing"
+      }
+    }
+  },
+  "aggs": {
+    "all_docs_veri": {
+      "global": {},
+      "aggs": {
+        "avg_base_price": {
+          "avg": {
+            "field": "products.base_price"
+          }
+        }
+      }
+    },
+    "active_men_avg_price":{
+      "avg": {
+        "field": "products.base_price"
+      }
+    }
+  }
+}
+
+
+

@@ -1,0 +1,56 @@
+
+#bu arama birebir eşleşmeye bakar, full text search değildir. sebebi term alanı ile arama yapılması
+
+GET kibana_sample_data_ecommerce/_search
+{
+  "query": {
+    "term": {
+      "customer_first_name.keyword": {
+        "value":"Elyssa"
+      }
+    }
+  }
+}
+
+
+#Elyssa değerini küçük harfle aradığında tam eşleşme olmayacağı için veri gelmez
+
+GET kibana_sample_data_ecommerce/_search
+{
+  "query": {
+    "term": {
+      "customer_first_name.keyword": {
+        "value":"elyssa"
+      }
+    }
+  }
+}
+
+
+#case_insensitive alanını sorguya eklersek gelecektir
+
+GET kibana_sample_data_ecommerce/_search
+{
+  "query": {
+    "term": {
+      "customer_first_name.keyword": {
+        "value":"elyssa",
+        "case_insensitive": true
+      }
+    }
+  }
+}
+
+
+
+#terms birden fazla değer için arama yapıyoruz. sql deki in(..,..) mantığı gibi
+GET kibana_sample_data_ecommerce/_search
+{
+  "query": {
+    "terms": {
+      "customer_first_name.keyword": [
+        "Tariq","Yuri"
+        ]
+    }
+  }
+}
